@@ -1,0 +1,33 @@
+package client.handler;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import client.file.FileUtil;
+import client.spring.SpringBeanRefresh;
+import core.event.ConfigModifyEvent;
+import core.handler.Handler;
+
+@Component("configAddHandler")
+public class ConfigAddHandler implements Handler {
+
+	@Autowired
+	private SpringBeanRefresh springBeanRefresh;
+	
+	public SpringBeanRefresh getSpringBeanRefresh() {
+		return springBeanRefresh;
+	}
+
+	public void setSpringBeanRefresh(SpringBeanRefresh springBeanRefresh) {
+		this.springBeanRefresh = springBeanRefresh;
+	}
+
+	@Override
+	public void handle(ConfigModifyEvent event) {
+		// 更新到文件
+		FileUtil.saveApplicationConfig(event);
+		// spring容器中重新注册bean
+		springBeanRefresh.refreshBean(event);
+	}
+
+}
