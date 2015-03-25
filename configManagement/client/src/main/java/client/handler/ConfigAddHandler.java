@@ -26,8 +26,8 @@ public class ConfigAddHandler implements Handler {
 	public void handle(ConfigModifyEvent event) {
 		// 更新到文件
 		FileUtil.saveApplicationConfig(event);
-		// spring容器中重新注册bean
-		springBeanRefresh.refreshBean(event);
+		// spring容器中重新注册bean,暂时先不刷新spring中的bean，后续用jvm agent来实现
+		// springBeanRefresh.refreshBean(event);
 	}
 
 }
